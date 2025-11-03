@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const sendOtp = require("../utils/sendOtp");
 
+// =================== REGISTER ===================
 exports.register = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -15,14 +16,25 @@ exports.register = async (req, res) => {
     const user = new User({ email, password: hashed, otp });
     await user.save();
 
-    await sendOtp(email, otp);
+    // Envoi du mail OTP (désactive si tu veux juste tester sans SMTP)
+    try {
+      await sendOtp(email, otp);
+    } catch (e) {
+      console.warn("⚠️ Échec d'envoi OTP, mais utilisateur créé :", e.message);
+    }
 
-    res.json({ msg: "Utilisateur créé, OTP envoyé !" });
+    // ✅ Retourne aussi le code OTP pour test Postman
+    res.json({
+      msg: "Utilisateur créé, OTP envoyé !",
+      otp: otp,
+      email: user.email
+    });
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
 };
 
+// =================== VERIFY OTP ===================
 exports.verifyOtp = async (req, res) => {
   try {
     const { email, otp } = req.body;
@@ -40,6 +52,7 @@ exports.verifyOtp = async (req, res) => {
   }
 };
 
+// =================== LOGIN ===================
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -54,6 +67,57 @@ exports.login = async (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
     res.json({ msg: "Connexion réussie", token });
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+};
+
+// =================== GET PROFILE ===================
+exports.getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password -otp");
+    if (!user) return res.status(404).json({ msg: "Utilisateur non trouvé" });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+};
+
+// =================== UPDATE PROFILE ===================
+exports.updateProfile = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const updates = {};
+
+    if (email) updates.email = email;
+    if (password) updates.password = await bcrypt.hash(password, 10);
+
+    const user = await User.findByIdAndUpdate(req.user.id, updates, { new: true }).select("-password -otp");
+    if (!user) return res.status(404).json({ msg: "Utilisateur non trouvé" });
+
+    res.json({ msg: "Profil mis à jour", user });
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+};
+
+// =================== DELETE ACCOUNT ===================
+exports.deleteAccount = async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.user.id);
+    if (!user) return res.status(404).json({ msg: "Utilisateur non trouvé" });
+
+    res.json({ msg: "Compte supprimé avec succès" });
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+};
+
+// =================== GET ALL USERS (ADMIN) ===================
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select("-password -otp");
+    res.json(users);
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
