@@ -12,7 +12,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res)=> {
-  res.send("this is our server") 
+  res.send("this is our server")  
   
 })
 
