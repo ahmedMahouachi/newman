@@ -31,8 +31,8 @@ jobs:
 
       - name: Lancement de newman
         run: |
-          newman run "/postman/collection.postman_collection.json" \
-          -e "/postman/environnement.postman_environment.json" \
+          newman run "./postman/collection.postman_collection.json" \
+          -e "./postman/environnement.postman_environment.json" \
           --iteration-data "/postman/iteration.json"
 
 
