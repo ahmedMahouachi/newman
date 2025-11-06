@@ -33,7 +33,7 @@ jobs:
         run: |
           newman run "./postman/collection.postman_collection.json" \
           -e "./postman/environnement.postman_environment.json" \
-          --iteration-data "/postman/iteration.json"
+          --iteration-data "./postman/iteration.json"
 
 
 
