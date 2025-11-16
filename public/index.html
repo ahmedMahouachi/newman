@@ -1,11 +1,271 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Backend OTP Project</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            background: #4a6cf7;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #4a6cf7;
+        }
+
+        .exercise {
+            background: #eef2ff;
+            padding: 15px;
+            border-left: 5px solid #4a6cf7;
+            margin-bottom: 20px;
+            border-radius: 6px;
+        }
+
+        code {
+            background: #eee;
+            padding: 3px 6px;
+            border-radius: 4px;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>This is Html file</h1>
+    <header>
+        <h1>Projet Backend avec OTP</h1>
+    </header>
+
+    <div class="container">
+        <h2>📌 Description du Projet</h2>
+        <p>
+            Ce backend permet de gérer un système d'authentification avec OTP (One Time Password).
+            L'utilisateur peut créer un compte, recevoir un code OTP par email, vérifier son compte,
+            se connecter, mettre à jour son profil, supprimer son compte et récupérer la liste
+            des utilisateurs. Toutes les routes fonctionnent via l'API déployée sur Render.
+        </p>
+
+        <p><strong>Base URL :</strong> <code>https://backend-with-otp.onrender.com/</code></p>
+
+        <h2>🧪 Série d'exercices Postman</h2>
+
+        <div class="exercise">
+            <h3>Exercice 1 — Créer un utilisateur (Register)</h3>
+            <p>Fais une requête POST vers :</p>
+            <code>/api/auth/register</code>
+            <p>Body (JSON) :</p>
+            <code>{ "email": "test@test.com", "password": "123456" }</code>
+            <h4>🔎 Tests à effectuer :</h4>
+            <ul>
+              
+                <li>Vérifier que la réponse renvoie un OTP.</li>
+                <li>Vérifier que l’email retourné correspond à celui envoyé.</li>
+                <li>Vérifier que le statut HTTP est 201.</li>
+            </ul>
+        </div>
+
+        <div class="exercise">
+            <h3>Exercice 2 — Vérifier l'OTP</h3>
+            <p>Fais une requête POST vers :</p>
+            <code>/api/auth/verify-otp</code>
+            <p>Body (JSON) :</p>
+            <code>{ "email": "test@test.com", "otp": "000000" }</code>
+            <h4>🔎 Tests à effectuer :</h4>
+            <ul>
+                <li>Vérifier que la réponse indique que le compte est vérifié.</li>
+                <li>Vérifier que le statut HTTP est 200.</li>
+                <li>Vérifier que l'OTP n'existe plus dans l'utilisateur.</li>
+                <li>Tester une OTP invalide pour vérifier l'erreur.</li>
+            </ul>
+        </div>
+
+        <div class="exercise">
+            <h3>Exercice 3 — Se connecter</h3>
+            <p>Fais une requête POST vers :</p>
+            <code>/api/auth/login</code>
+            <p>Body (JSON) :</p>
+            <code>{ "email": "test@test.com", "password": "123456" }</code>
+            <h4>🔎 Tests à effectuer :</h4>
+            <ul>
+                <li>Vérifier que la réponse contient un token.</li>
+                <li>Vérifier que le statut HTTP est 200.</li>
+                <li>Tester un mauvais mot de passe.</li>
+                <li>Tester un compte non vérifié.</li>
+            </ul>
+        </div>
+
+        <div class="exercise">
+            <h3>Exercice 4 — Obtenir son profil (token obligatoire)</h3>
+            <p>Fais une requête GET vers :</p>
+            <code>/api/auth/profile</code>
+            <p>Header obligatoire :</p>
+            <code>Authorization: Bearer VOTRE_TOKEN</code>
+            <h4>🔎 Tests à effectuer :</h4>
+            <ul>
+                <li>Vérifier que le profil retourné contient l'email.</li>
+                <li>Vérifier que le statut HTTP est 200.</li>
+                <li>Tester avec un token expiré.</li>
+                <li>Tester sans token pour vérifier l'erreur.</li>
+            </ul>
+        </div>
+
+        <div class="exercise">
+            <h3>Exercice 5 — Mettre à jour le profil (token obligatoire)</h3>
+            <p>Fais une requête PUT vers :</p>
+            <code>/api/auth/profile</code>
+            <p>Header obligatoire :</p>
+            <code>Authorization: Bearer VOTRE_TOKEN</code>
+            <p>Body (JSON) :</p>
+            <code>{ "email": "nouveau@mail.com" }</code>
+            <h4>🔎 Tests à effectuer :</h4>
+            <ul>
+                <li>Vérifier que l'email est bien mis à jour.</li>
+                <li>Vérifier que le statut HTTP est 200.</li>
+                <li>Tester sans token.</li>
+                <li>Tester avec un email invalide.</li>
+            </ul>
+        </div>
+
+        <div class="exercise">
+            <h3>Exercice 6 — Supprimer son compte (token obligatoire)</h3>
+            <p>Fais une requête DELETE vers :</p>
+            <code>/api/auth/profile</code>
+            <p>Header obligatoire :</p>
+            <code>Authorization: Bearer VOTRE_TOKEN</code>
+            <h4>🔎 Tests à effectuer :</h4>
+            <ul>
+                <li>Vérifier que la réponse confirme la suppression.</li>
+                <li>Vérifier que le statut HTTP est 200.</li>
+                <li>Tester une requête après suppression pour voir l'erreur.</li>
+                <li>Tester sans token.</li>
+            </ul>
+        </div>
+
+        <div class="exercise">
+            <h3>Exercice 7 — Récupérer la liste de tous les utilisateurs (token obligatoire)</h3>
+            <p>Fais une requête GET vers :</p>
+            <code>/api/auth/users</code>
+            <p>Header obligatoire :</p>
+            <code>Authorization: Bearer VOTRE_TOKEN</code>
+            <h4>🔎 Tests à effectuer :</h4>
+            <ul>
+                <li>Vérifier que la réponse renvoie un tableau.</li>
+                <li>Vérifier que chaque utilisateur ne contient pas le mot de passe.</li>
+                <li>Tester sans token.</li>
+                <li>Tester avec un token invalide.</li>
+            </ul>
+        </div>
+
+        <h2>⚙️ Automatisation des variables (OTP et Token)</h2>
+        <p>Dans cette section, tu vas apprendre à automatiser la récupération et l'utilisation de l’OTP et du token dans
+            un environnement Postman.</p>
+
+        <div class="exercise">
+            <h3>Exercice A — Sauvegarder automatiquement l’OTP dans l’environnement</h3>
+            <p>Après avoir créé un utilisateur, Postman doit automatiquement récupérer l’OTP envoyé dans la réponse et
+                le stocker comme variable.</p>
+            <h4>🔎 Tests / Actions à effectuer :</h4>
+            <ul>
+                <li>Récupérer l’OTP depuis <code>responseBody.otp</code>.</li>
+                <li>Créer une variable d’environnement nommée <strong>otp</strong>.</li>
+                <li>Tester que la variable est bien enregistrée dans l’environnement.</li>
+                <li>Changer l'OTP manuellement pour voir si le test échoue.</li>
+            </ul>
+        </div>
+
+        <div class="exercise">
+            <h3>Exercice B — Utiliser automatiquement la variable OTP pour vérifier le compte</h3>
+            <p>La requête <code>/verify-otp</code> doit utiliser la variable enregistrée automatiquement.</p>
+            <h4>🔎 Tests / Actions à effectuer :</h4>
+            <ul>
+                <li>Remplacer la valeur OTP dans le body par <code>{{otp}}</code>.</li>
+                <li>Tester si la requête fonctionne correctement.</li>
+                <li>Tester en supprimant la variable otp et observer l’erreur.</li>
+                <li>Vérifier dans l’historique que la bonne valeur a été injectée.</li>
+            </ul>
+        </div>
+
+        <div class="exercise">
+            <h3>Exercice C — Sauvegarder automatiquement le Token après le login</h3>
+            <p>Après la connexion, le token JWT doit être stocké automatiquement dans une variable d’environnement.</p>
+            <h4>🔎 Tests / Actions à effectuer :</h4>
+            <ul>
+                <li>Extraire le token depuis <code>responseBody.token</code>.</li>
+                <li>Créer une variable <strong>token</strong> dans l’environnement.</li>
+                <li>Tester une route protégée utilisant <strong>{{token}}</strong>.</li>
+                <li>Modifier la variable token manuellement pour vérifier que l’accès est refusé.</li>
+            </ul>
+        </div>
+
+        <div class="exercise">
+            <h3>Exercice D — Utiliser automatiquement le Token dans les Headers</h3>
+            <p>Les routes protégées doivent utiliser automatiquement le token enregistré.</p>
+            <h4>🔎 Tests / Actions à effectuer :</h4>
+            <ul>
+                <li>Remplacer la valeur du header Authorization par <code>Bearer {{token}}</code>.</li>
+                <li>Tester si l’accès est autorisé.</li>
+                <li>Tester sans token pour vérifier le message d’erreur.</li>
+                <li>Forcer un token incorrect pour vérifier le statut HTTP 401.</li>
+            </ul>
+        </div>
+
+        <h2>📤 Export de la collection et de l’environnement pour Newman</h2>
+        <p>Cette section explique comment exporter la collection Postman et l’environnement afin de générer un rapport
+            automatique avec Newman.</p>
+
+        <div class="exercise">
+            <h3>Étape 1 — Exporter la collection Postman</h3>
+            <ul>
+                <li>Ouvrir Postman → Collection → Options → Export.</li>
+                <li>Choisir le format JSON le plus récent.</li>
+                <li>Sauvegarder le fichier dans un dossier nommé <strong>postman</strong>.</li>
+                <li>Vérifier que le fichier contient bien toutes les routes.</li>
+            </ul>
+        </div>
+
+        <div class="exercise">
+            <h3>Étape 2 — Exporter l’environnement</h3>
+            <ul>
+                <li>Aller dans Environments → Options → Export.</li>
+                <li>Sauvegarder le fichier JSON dans le même dossier.</li>
+                <li>Vérifier que les variables <strong>otp</strong> et <strong>token</strong> y figurent.</li>
+                <li>Tester l’import sur un autre PC pour vérifier que tout fonctionne.</li>
+            </ul>
+        </div>
+
+        <div class="exercise">
+            <h3>Étape 3 — Générer un rapport HTML avec Newman</h3>
+            <ul>
+                <li>Installer Newman globalement via NPM.</li>
+                <li>Placer les fichiers exportés dans un même dossier.</li>
+                <li>Lancer Newman en utilisant la collection et l’environnement exportés.</li>
+                <li>Vérifier que le rapport HTML contient les résultats de tous les tests.</li>
+            </ul>
+        </div>
+
+    </div>
+
+
+
 </body>
+
 </html>
