@@ -17,11 +17,7 @@ exports.register = async (req, res) => {
     await user.save();
 
     // Envoi du mail OTP (désactive si tu veux juste tester sans SMTP)
-    try {
-      await sendOtp(email, otp);
-    } catch (e) {
-      console.warn("⚠️ Échec d'envoi OTP, mais utilisateur créé :", e.message);
-    }
+  
 
     // ✅ Retourne aussi le code OTP pour test Postman
     res.json({
