@@ -78,8 +78,9 @@
             <ul>
               
                 <li>Vérifier que la réponse renvoie un OTP.</li>
-                <li>Vérifier que l’email retourné correspond à celui envoyé.</li>
+                <li>Vérifier que la réponse contient un champ msg.</li>
                 <li>Vérifier que le statut HTTP est 201.</li>
+                <li>Vérifier que l'OTP a 6 characteres</li>
             </ul>
         </div>
 
@@ -93,8 +94,6 @@
             <ul>
                 <li>Vérifier que la réponse indique que le compte est vérifié.</li>
                 <li>Vérifier que le statut HTTP est 200.</li>
-                <li>Vérifier que l'OTP n'existe plus dans l'utilisateur.</li>
-                <li>Tester une OTP invalide pour vérifier l'erreur.</li>
             </ul>
         </div>
 
@@ -108,8 +107,6 @@
             <ul>
                 <li>Vérifier que la réponse contient un token.</li>
                 <li>Vérifier que le statut HTTP est 200.</li>
-                <li>Tester un mauvais mot de passe.</li>
-                <li>Tester un compte non vérifié.</li>
             </ul>
         </div>
 
@@ -123,8 +120,7 @@
             <ul>
                 <li>Vérifier que le profil retourné contient l'email.</li>
                 <li>Vérifier que le statut HTTP est 200.</li>
-                <li>Tester avec un token expiré.</li>
-                <li>Tester sans token pour vérifier l'erreur.</li>
+                <li>Vérifier que les champs sensibles sont absents (password, OTP).</li>
             </ul>
         </div>
 
@@ -140,8 +136,6 @@
             <ul>
                 <li>Vérifier que l'email est bien mis à jour.</li>
                 <li>Vérifier que le statut HTTP est 200.</li>
-                <li>Tester sans token.</li>
-                <li>Tester avec un email invalide.</li>
             </ul>
         </div>
 
@@ -155,8 +149,6 @@
             <ul>
                 <li>Vérifier que la réponse confirme la suppression.</li>
                 <li>Vérifier que le statut HTTP est 200.</li>
-                <li>Tester une requête après suppression pour voir l'erreur.</li>
-                <li>Tester sans token.</li>
             </ul>
         </div>
 
@@ -170,8 +162,6 @@
             <ul>
                 <li>Vérifier que la réponse renvoie un tableau.</li>
                 <li>Vérifier que chaque utilisateur ne contient pas le mot de passe.</li>
-                <li>Tester sans token.</li>
-                <li>Tester avec un token invalide.</li>
             </ul>
         </div>
 
