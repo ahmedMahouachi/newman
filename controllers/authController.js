@@ -20,7 +20,7 @@ exports.register = async (req, res) => {
   
 
     // ✅ Retourne aussi le code OTP pour test Postman
-    res.status(201).json({
+    res.status(200).json({
       msg: "Utilisateur créé, OTP envoyé !",
       otp: otp,
       email: user.email
